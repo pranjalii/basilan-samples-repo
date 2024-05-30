@@ -11,7 +11,7 @@ jobs:
     env:
       BASILAN_DOWNLOAD_URL: https://cli.zeta-iad.basilan.gss.aws.dev/basilan-cli/0.4.20
       CLI_VER: basilan-cli_Linux_x86_64.tar.gz
-      BASILAN_PROFILE: workshop-profile
+      BASILAN_PROFILE: workshop-demo
       AWS_DEFAULT_REGION: us-east-1
 
     steps:
