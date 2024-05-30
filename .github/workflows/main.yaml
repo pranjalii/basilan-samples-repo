@@ -1,0 +1,39 @@
+name: Basilan Actions demo
+
+on: [push, pull_request]
+
+permissions: write-all
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    env:
+      BASILAN_DOWNLOAD_URL: https://cli.zeta-iad.basilan.gss.aws.dev/basilan-cli/0.4.20
+      CLI_VER: basilan-cli_Linux_x86_64.tar.gz
+      BASILAN_PROFILE: workshop-profile
+      AWS_DEFAULT_REGION: us-east-1
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: aws-creds
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-region: us-east-1
+        role-to-assume: arn:aws:iam::331748120088:role/Pranjali-basilan-role
+        role-session-name: githubAction
+
+    - name: Install AWS CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install awscli -y
+
+    - name: Install Basilan CLI
+      run: |
+        curl ${BASILAN_DOWNLOAD_URL}/${CLI_VER} --output - | tar -zx -C /usr/local/bin basilan
+
+    - name: Run Basilan Scan
+      run: |
+        basilan scan -p ${BASILAN_PROFILE} --region us-east-1 --runner remote
